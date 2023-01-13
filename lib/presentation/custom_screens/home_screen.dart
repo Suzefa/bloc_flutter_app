@@ -1,13 +1,16 @@
 import 'dart:io';
 
+import 'package:example_project/business_logics/bloc/cart_bloc/cart_management_bloc.dart';
 import 'package:example_project/data/models/explore_item_model.dart';
 import 'package:example_project/presentation/custom_widgets/custom_best_selling_widget.dart';
 import 'package:example_project/presentation/custom_widgets/custom_explore_item.dart';
 import 'package:example_project/presentation/custom_widgets/custom_icon_button.dart';
 import 'package:example_project/presentation/custom_widgets/custom_text_field.dart';
 import 'package:example_project/presentation/custom_widgets/custom_text_widget.dart';
+import 'package:example_project/presentation/route_management/route_names.dart';
 import 'package:example_project/presentation/utilities/color_constant.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -31,11 +34,12 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icons.menu,
             iconColor: ColorConstant.kBlackColor,
             buttonSize: 30.0,
-            onButtonPressed: (){},
+            onButtonPressed: () {},
           ),
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right: 15.0,top: 5.0,bottom: 5.0,),
+              padding: const EdgeInsets.only(
+                right: 15.0, top: 5.0, bottom: 5.0,),
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15.0),
@@ -85,13 +89,46 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                  CustomIconButton(
-                    icon: Icons.shopping_cart_outlined,
-                    iconColor: ColorConstant.kBlackColor,
-                    buttonSize: 30.0,
-                    onButtonPressed: (){
+                  Stack(
+                    children: [
+                      CustomIconButton(
+                        icon: Icons.shopping_cart_outlined,
+                        iconColor: ColorConstant.kBlackColor,
+                        buttonSize: 30.0,
+                        onButtonPressed: () {
 
-                    },
+                        },
+                      ),
+                      BlocBuilder<CartManagementBloc, CartManagementState>(
+                        builder: (context, state) {
+                          if(state is CartCountState){
+                            return Visibility(
+                              visible: state.totalItem > 0,
+                              child: Positioned(
+                                top: 0,
+                                right: 0,
+                                child: Container(
+                                  height: 25.0,
+                                  width: 25.0,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: ColorConstant.kRedColor,
+                                  ),
+                                  padding: const EdgeInsets.all(5.0,),
+                                  child: FittedBox(
+                                    child: CustomTextWidget(
+                                      text: "${state.totalItem}",
+                                      textColor: ColorConstant.kWhiteColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                          return const SizedBox.shrink();
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -111,20 +148,29 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: 20,
-                    itemBuilder: (listContext, index){
+                    itemBuilder: (listContext, index) {
                       ExploreItemModel exploreItem = ExploreItemModel.setValues(
                         itemName: "itemName",
                         itemDescription: "itemDescription",
                         itemImageUrl: "",
                         itemPrice: 100.0,
                         isInFavorite: "",
+                        colorOptions: [
+                          ColorConstant.kRedColor,
+                          ColorConstant.kYellowColor,
+                          ColorConstant.kBlackColor,
+                        ],
                       );
                       return Container(
                         padding: const EdgeInsets.only(right: 15.0,),
                         alignment: Alignment.center,
                         child: CustomExploreItem(
                           exploreItem: exploreItem,
-                          onAddButton: (){},
+                          onAddButton: () {
+                            BlocProvider.of<CartManagementBloc>(context).add(
+                              CartIncrementEvent(exploreItem),
+                            );
+                          },
                         ),
                       );
                     },
@@ -133,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
 
               const Padding(
-                padding: EdgeInsets.only(top: 20.0,bottom: 10.0,),
+                padding: EdgeInsets.only(top: 20.0, bottom: 10.0,),
                 child: CustomTextWidget(
                   text: "Best Selling",
                   fontSize: 30.0,
@@ -146,20 +192,32 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: 20,
-                    itemBuilder: (listContext, index){
+                    itemBuilder: (listContext, index) {
                       ExploreItemModel exploreItem = ExploreItemModel.setValues(
                         itemName: "itemName",
                         itemDescription: "itemDescription",
-                        itemImageUrl: "",
+                        itemImageUrl: "https://media.gettyimages.com/id/184944186/photo/quaid-e-azam.jpg?s=612x612&w=gi&k=20&c=Nr9cDm0BY-yx1eu7bUGN3QGk87VybswqcqTwT05S-U8=",
                         itemPrice: 100.0,
                         isInFavorite: "",
+                        colorOptions: [
+                          ColorConstant.kRedColor,
+                          ColorConstant.kYellowColor,
+                          ColorConstant.kBlackColor,
+                        ],
                       );
                       return Container(
-                        padding: const EdgeInsets.only(right: 15.0,bottom: 10.0,),
+                        padding: const EdgeInsets.only(
+                          right: 15.0, bottom: 10.0,),
                         alignment: Alignment.center,
                         child: CustomBestSellingWidget(
                           exploreItemModel: exploreItem,
-                          onButtonPressed: (){},
+                          onButtonPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              RouteNames.kItemViewScreenRoute,
+                              arguments: exploreItem,
+                            );
+                          },
                         ),
                       );
                     },
@@ -173,8 +231,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void _removeFocus(){
-    if(_focusNode.hasFocus){
+  void _removeFocus() {
+    if (_focusNode.hasFocus) {
       _focusNode.unfocus();
     }
   }
