@@ -31,6 +31,8 @@ class CustomBestSellingWidget extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(20.0),
               child: CustomImageWidget(
+                backgroundHeight: 70.0,
+                backgroundWidth: 70.0,
                 imageWidget: exploreItemModel.itemImageUrl,
                 height: 70.0,
                 width: 70.0,

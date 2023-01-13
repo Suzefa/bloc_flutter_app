@@ -1,9 +1,12 @@
+import 'dart:ui';
+
 class ExploreItemModel {
   String itemImageUrl = "";
   String itemName = "";
   String itemDescription = "";
   double itemPrice = -0.0;
   String isInFavorite = "";
+  List<Color> colorOptions = [];
 
   ExploreItemModel.empty();
 
@@ -13,6 +16,7 @@ class ExploreItemModel {
     required this.itemImageUrl,
     required this.itemPrice,
     required this.isInFavorite,
+    required this.colorOptions,
   });
 
   @override

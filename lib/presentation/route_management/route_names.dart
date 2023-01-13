@@ -9,4 +9,6 @@ class RouteNames{
   }
 
   static const String kInitialRoute = "/";
+  static const String kItemViewScreenRoute = "/Item_View_Screen_Route";
+
 }
