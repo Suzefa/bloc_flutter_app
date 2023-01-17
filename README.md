@@ -1,16 +1,37 @@
-# example_project
+# Flutter Bloc State Management App
 
-A new Flutter project.
+This app is created with Flutter framework and focus to implement the flutter bloc and with the clean architecture using MVVM approach.
+
+## Screenshots
+
+<p align="center">
+  <img src="https://github.com/Suzefa/bloc_flutter_app/blob/master/.output_result_image/example_UI.jpg" height="300" title="Image From Free pic">
+</p>
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+1. Make sure you have [Flutter Latest](https://flutter.dev/docs/get-started/install) installed on your computer.
+2. Clone the repository: `git clone https://github.com/Suzefa/bloc_flutter_app.git`
+3. Go to the project directory: `cd bloc_flutter_app`
+4. Install the dependencies: `flutter pub get`
+5. Run the app on an emulator or device: `flutter run`
 
-A few resources to get you started if this is your first Flutter project:
+## Features
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- App is demo of the e-commerce ap
+- You can select your product to view
+- Add product in your cart
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Built With
+
+- [Flutter](https://flutter.dev/) - The mobile app development framework used
+- [Firebase](https://firebase.google.com/) - The backend service used
+- [Flutter Bloc](https://pub.dev/packages/flutter_bloc) - The state management used
+
+## Authors
+
+- **Ameer Hamza** - *Design and Implement backends* - [Suzefa](https://github.com/suzefa)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/username/project-name/blob/master/LICENSE) file for details
