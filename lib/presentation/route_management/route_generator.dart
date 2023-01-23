@@ -1,14 +1,12 @@
-
-import 'package:example_project/business_logics/bloc/sign_in/sign_in_screen_bloc.dart';
-import 'package:example_project/presentation/custom_screens/sign_in_screen.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../business_logics/bloc/sign_in/sign_in_screen_bloc.dart';
 import '../../business_logics/cubit/splash_screen_cubit/splash_screen_cubit.dart';
 import '../../data/models/explore_item_model.dart';
 import '../custom_screens/home_screen.dart';
 import '../custom_screens/item_view_screen.dart';
+import '../custom_screens/sign_in_screen.dart';
 import '../custom_screens/splash_screen.dart';
 import 'route_names.dart';
 
