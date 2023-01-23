@@ -1,4 +1,5 @@
 
+import 'package:equatable/equatable.dart';
 import 'package:example_project/presentation/utilities/color_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,23 +8,24 @@ part 'sign_in_screen_event.dart';
 part 'sign_in_screen_state.dart';
 
 class SignInScreenBloc extends Bloc<SignInScreenEvent, SignInScreenState> {
-  SignInScreenBloc() : super(SignInScreenInitial(true)) {
-    on<PasswordVisibleEvent>((event, emit){
-      _showPassword = !_showPassword;
-      emit(PasswordFieldObscure(_showPassword));
-    });
+
+  SignInScreenBloc() : super(const SignInScreenState()) {
+    on<PasswordVisibleEvent>(_onPasswordVisibleEvent);
 
     on<EmailValidationEvent>(_onEmailValidateEvent);
 
     on<PasswordValidationEvent>(_onPasswordValidateEvent);
 
+    on<RememberMeEvent>(_onRememberMeEvent);
+
+    on<SignInButtonEvent>(_onSignInButtonEvent);
   }
 
   final TextEditingController emailEditingController = TextEditingController();
   final FocusNode emailFocusNode = FocusNode();
   final TextEditingController passwordEditingController = TextEditingController();
   final FocusNode passwordFocusNode = FocusNode();
-  bool _showPassword = false;
+  bool _showPassword = true,_rememberMe = false;
   String _emailErrorMsg = "", _passwordErrorMsg="";
 
   void removeFocus(){
@@ -37,7 +39,7 @@ class SignInScreenBloc extends Bloc<SignInScreenEvent, SignInScreenState> {
   bool _validateEmail(){
     if(emailEditingController.text.isEmpty){
       _emailErrorMsg = "Email is required";
-    } else if(!(RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(emailEditingController.text))) {
+    } else if(!(RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+[a-zA-Z]").hasMatch(emailEditingController.text))) {
       _emailErrorMsg = "Invalid email address";
     } else {
       _emailErrorMsg = "";
@@ -47,28 +49,73 @@ class SignInScreenBloc extends Bloc<SignInScreenEvent, SignInScreenState> {
 
   bool _validatePassword(){
     if(passwordEditingController.text.isEmpty){
-      _passwordErrorMsg = "Email is required";
-    } else if(passwordEditingController.text.trim().length<8) {
+      _passwordErrorMsg = "Password is required";
+    } else if(passwordEditingController.text.length<8) {
       _passwordErrorMsg = "Password is too short";
     } else {
-      _emailErrorMsg = "";
+      _passwordErrorMsg = "";
     }
-    return _emailErrorMsg.isEmpty;
+    return _passwordErrorMsg.isEmpty;
   }
 
   void _onPasswordValidateEvent(PasswordValidationEvent event, Emitter<SignInScreenState> emit){
-    if(_validatePassword()){
-      emit(ValidPasswordFieldState());
-    }else{
-      emit(InvalidPasswordFieldState(_passwordErrorMsg,ColorConstant.kRedColor));
-    }
+    emit(
+      state.copyWith(
+        passwordErrorMsg: _validatePassword() ? "" : _passwordErrorMsg,
+        passwordErrorColor: _validatePassword() ? null : ColorConstant.kRedColor,
+      ),
+    );
+  }
+
+  void _onPasswordVisibleEvent(PasswordVisibleEvent event, Emitter<SignInScreenState> emit){
+    _showPassword = !_showPassword;
+    emit(
+      state.copyWith(
+        isPasswordVisible: _showPassword,
+      ),
+    );
+  }
+
+  void _onRememberMeEvent(RememberMeEvent event, Emitter<SignInScreenState> emit){
+    _rememberMe = !_rememberMe;
+    emit(
+      state.copyWith(
+        isRememberMe: _rememberMe,
+      ),
+    );
   }
 
   void _onEmailValidateEvent(EmailValidationEvent event, Emitter<SignInScreenState> emit){
-    if(_validateEmail()){
-      emit(ValidEmailFieldState());
-    } else {
-      emit(InvalidEmailFieldState(_emailErrorMsg, ColorConstant.kRedColor));
+    emit(
+      state.copyWith(
+        emailErrorColor: _validateEmail() ? null : ColorConstant.kRedColor,
+        emailErrorMsg: _validateEmail() ? "" : _emailErrorMsg,
+      ),
+    );
+  }
+
+  void _onSignInButtonEvent(SignInButtonEvent event, Emitter<SignInScreenState> emit) async{
+    if(_validateEmail() & _validatePassword()){
+      emit(
+        state.copyWith(
+          isLoading: true,
+        ),
+      );
+      await Future.delayed(const Duration(seconds: 5),(){});
+      emit(
+        state.copyWith(
+          isLoading: false,
+        ),
+      );
+    }else{
+      emit(
+        state.copyWith(
+          passwordErrorMsg: _passwordErrorMsg,
+          passwordErrorColor: ColorConstant.kRedColor,
+          emailErrorColor: ColorConstant.kRedColor,
+          emailErrorMsg: _emailErrorMsg,
+        ),
+      );
     }
   }
 
