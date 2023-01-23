@@ -23,7 +23,7 @@ class SplashScreenCubit extends Cubit<SplashScreenState> {
         timer.cancel();
         Navigator.pushNamedAndRemoveUntil(
           context,
-          RouteNames.kHomeScreenRoute,
+          RouteNames.kSignInScreenRoute,
               (page)=> false,
         );
       }

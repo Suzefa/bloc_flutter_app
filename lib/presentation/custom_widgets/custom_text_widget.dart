@@ -7,7 +7,8 @@ class CustomTextWidget extends StatelessWidget {
   final double? fontSize;
   final FontStyle? fontStyle;
   final FontWeight? fontWeight;
-  const CustomTextWidget({Key? key, required this.text, this.textColor, this.fontSize, this.fontStyle, this.fontWeight}) : super(key: key);
+  final TextDecoration? textDecoration;
+  const CustomTextWidget({Key? key, required this.text, this.textColor, this.fontSize, this.fontStyle, this.fontWeight, this.textDecoration}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +20,7 @@ class CustomTextWidget extends StatelessWidget {
           fontSize: fontSize,
           fontWeight: fontWeight,
           fontStyle: fontStyle,
+          decoration: textDecoration,
         ),
       ),
     );
