@@ -2,6 +2,7 @@ import 'package:example_project/business_logics/bloc/sign_in/sign_in_screen_bloc
 import 'package:example_project/presentation/custom_widgets/custom_app_button.dart';
 import 'package:example_project/presentation/custom_widgets/custom_text_field.dart';
 import 'package:example_project/presentation/custom_widgets/custom_text_widget.dart';
+import 'package:example_project/presentation/route_management/route_names.dart';
 import 'package:example_project/presentation/utilities/color_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -224,7 +225,9 @@ class SignInScreen extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(left: 10.0,),
                           child: GestureDetector(
-                            onTap: (){},
+                            onTap: (){
+                              Navigator.of(context).pushNamed(RouteNames.kSignUpScreenRoute);
+                            },
                             child: const CustomTextWidget(
                               text: "Sign Up",
                               fontSize: 12.0,
