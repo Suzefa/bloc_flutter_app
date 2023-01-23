@@ -7,6 +7,11 @@ import 'presentation/utilities/bloc_cubit_observer.dart';
 import 'presentation/utilities/color_constant.dart';
 import 'presentation/utilities/multi_bloc_providers_list.dart';
 
+import 'presentation/route_management/route_generator.dart';
+import 'presentation/utilities/bloc_cubit_observer.dart';
+import 'presentation/utilities/color_constant.dart';
+import 'presentation/utilities/multi_bloc_providers_list.dart';
+
 void main() {
   Bloc.observer = BlocCubitObserver();
   runApp(const MyApp());
