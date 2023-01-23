@@ -7,3 +7,7 @@ class PasswordVisibleEvent extends SignInScreenEvent {}
 class EmailValidationEvent extends SignInScreenEvent {}
 
 class PasswordValidationEvent extends SignInScreenEvent {}
+
+class RememberMeEvent extends SignInScreenEvent {}
+
+class SignInButtonEvent extends SignInScreenEvent {}
