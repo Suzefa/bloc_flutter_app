@@ -24,7 +24,10 @@ class SignUpScreenBloc extends Bloc<SignUpScreenEvent, SignUpScreenState> {
       _fatherNameErrorMsg = "",
       _emailErrorMsg = "",
       _passwordErrorMsg = "",
-      _confirmPasswordErrorMsg =   "";
+      _confirmPasswordErrorMsg = "",
+      _privacyPolicyErrorMsg = "";
+  Gender _selectedGender = Gender.male;
+  bool _privacyPolicyChecked = false;
 
   SignUpScreenBloc() : super(const SignUpScreenState()) {
 
@@ -43,6 +46,10 @@ class SignUpScreenBloc extends Bloc<SignUpScreenEvent, SignUpScreenState> {
     on<ShowPasswordEvent>(_onShowPassword);
 
     on<OnButtonPressedEvent>(_onButtonPressedEvent);
+
+    on<OnGenderChangeEvent>(_onGenderChange);
+
+    on<OnSelectPrivacyPolicyEvent>(_onPrivacyPolicyEvent);
 
   }
 
@@ -103,7 +110,8 @@ class SignUpScreenBloc extends Bloc<SignUpScreenEvent, SignUpScreenState> {
 
   void _onButtonPressedEvent(OnButtonPressedEvent onButtonPressedEvent, Emitter<SignUpScreenState> emit) async {
     if(_validateFirstName() & _validateLastName() & _validateFatherName() &
-    _validateEmail() & _validatePassword() & _validateConfirmPassword()) {
+    _validateEmail() & _validatePassword() & _validateConfirmPassword() &
+    _validatePrivacyPolicy()) {
       emit(
         state.updateStateWith(
           isLoading: true,
@@ -124,6 +132,7 @@ class SignUpScreenBloc extends Bloc<SignUpScreenEvent, SignUpScreenState> {
           emailErrorMsg: _emailErrorMsg,
           passwordErrorMsg: _passwordErrorMsg,
           confirmPasswordErrorMsg: _confirmPasswordErrorMsg,
+          privacyPolicyErrorMsg: _privacyPolicyErrorMsg,
         ),
       );
     }
@@ -133,6 +142,26 @@ class SignUpScreenBloc extends Bloc<SignUpScreenEvent, SignUpScreenState> {
     emit(
       state.updateStateWith(
         hidePassword: !state.hidePassword,
+      ),
+    );
+  }
+
+  void _onGenderChange(OnGenderChangeEvent onGenderChangeEvent, Emitter<SignUpScreenState> emit){
+    _selectedGender = onGenderChangeEvent.selectedGender;
+    emit(
+      state.updateStateWith(
+        selectedGender: _selectedGender,
+      ),
+    );
+  }
+
+  void _onPrivacyPolicyEvent(OnSelectPrivacyPolicyEvent onSelectPrivacyPolicyEvent, Emitter<SignUpScreenState> emit){
+    _privacyPolicyChecked = !_privacyPolicyChecked;
+    _validatePrivacyPolicy();
+    emit(
+      state.updateStateWith(
+        privacyPolicyErrorMsg: _privacyPolicyErrorMsg,
+        isPrivacyPolicySelected: _privacyPolicyChecked,
       ),
     );
   }
@@ -162,6 +191,15 @@ class SignUpScreenBloc extends Bloc<SignUpScreenEvent, SignUpScreenState> {
       _firstNameErrorMsg = "";
     }
     return _firstNameErrorMsg.isEmpty;
+  }
+
+  bool _validatePrivacyPolicy() {
+    if(_privacyPolicyChecked){
+      _privacyPolicyErrorMsg = "";
+    } else {
+      _privacyPolicyErrorMsg = "Please accept privacy policy";
+    }
+    return _privacyPolicyErrorMsg.isEmpty;
   }
 
   bool _validateLastName() {
@@ -209,7 +247,9 @@ class SignUpScreenBloc extends Bloc<SignUpScreenEvent, SignUpScreenState> {
   }
 
   bool _validateConfirmPassword() {
-    if(passwordEditingController.text != confirmPasswordEditingController.text) {
+    if(confirmPasswordEditingController.text.isEmpty){
+      _confirmPasswordErrorMsg = "Please insert your password";
+    } else if(passwordEditingController.text != confirmPasswordEditingController.text) {
       _confirmPasswordErrorMsg = "Password and confirm password must be same";
     } else {
       _confirmPasswordErrorMsg = "";
@@ -234,4 +274,10 @@ class SignUpScreenBloc extends Bloc<SignUpScreenEvent, SignUpScreenState> {
     return super.close();
   }
 
+}
+
+enum Gender{
+  male,
+  female,
+  other,
 }
