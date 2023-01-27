@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -7,13 +10,17 @@ import 'presentation/utilities/bloc_cubit_observer.dart';
 import 'presentation/utilities/color_constant.dart';
 import 'presentation/utilities/multi_bloc_providers_list.dart';
 
-import 'presentation/route_management/route_generator.dart';
-import 'presentation/utilities/bloc_cubit_observer.dart';
-import 'presentation/utilities/color_constant.dart';
-import 'presentation/utilities/multi_bloc_providers_list.dart';
-
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = BlocCubitObserver();
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    systemNavigationBarColor: Platform.isAndroid
+        ? ColorConstant.kWhiteColor
+        : ColorConstant.kBlackColor,
+    systemNavigationBarIconBrightness: Brightness.dark,
+    statusBarColor: ColorConstant.kTransparentColor,
+    statusBarIconBrightness: Brightness.dark,
+  ));
   runApp(const MyApp());
 }
 
@@ -29,6 +36,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primaryColor: ColorConstant.kPrimaryColor,
           textTheme: GoogleFonts.audiowideTextTheme(),
+          useMaterial3: true,
         ),
         debugShowCheckedModeBanner: false,
       ),

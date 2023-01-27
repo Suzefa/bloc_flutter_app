@@ -1,6 +1,6 @@
 
 import 'package:equatable/equatable.dart';
-import 'package:example_project/presentation/utilities/color_constant.dart';
+import 'package:example_project/presentation/utilities/regex_validation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,6 +8,13 @@ part 'sign_in_screen_event.dart';
 part 'sign_in_screen_state.dart';
 
 class SignInScreenBloc extends Bloc<SignInScreenEvent, SignInScreenState> {
+
+  final TextEditingController emailEditingController = TextEditingController();
+  final FocusNode emailFocusNode = FocusNode();
+  final TextEditingController passwordEditingController = TextEditingController();
+  final FocusNode passwordFocusNode = FocusNode();
+  bool _showPassword = true,_rememberMe = false;
+  String _emailErrorMsg = "", _passwordErrorMsg="";
 
   SignInScreenBloc() : super(const SignInScreenState()) {
     on<PasswordVisibleEvent>(_onPasswordVisibleEvent);
@@ -21,13 +28,6 @@ class SignInScreenBloc extends Bloc<SignInScreenEvent, SignInScreenState> {
     on<SignInButtonEvent>(_onSignInButtonEvent);
   }
 
-  final TextEditingController emailEditingController = TextEditingController();
-  final FocusNode emailFocusNode = FocusNode();
-  final TextEditingController passwordEditingController = TextEditingController();
-  final FocusNode passwordFocusNode = FocusNode();
-  bool _showPassword = true,_rememberMe = false;
-  String _emailErrorMsg = "", _passwordErrorMsg="";
-
   void removeFocus(){
     if(passwordFocusNode.hasFocus){
       passwordFocusNode.unfocus();
@@ -39,7 +39,7 @@ class SignInScreenBloc extends Bloc<SignInScreenEvent, SignInScreenState> {
   bool _validateEmail(){
     if(emailEditingController.text.isEmpty){
       _emailErrorMsg = "Email is required";
-    } else if(!(RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+[a-zA-Z]").hasMatch(emailEditingController.text))) {
+    } else if(!(RegexValidation.isEmail(emailEditingController.text))) {
       _emailErrorMsg = "Invalid email address";
     } else {
       _emailErrorMsg = "";
@@ -62,7 +62,6 @@ class SignInScreenBloc extends Bloc<SignInScreenEvent, SignInScreenState> {
     emit(
       state.copyWith(
         passwordErrorMsg: _validatePassword() ? "" : _passwordErrorMsg,
-        passwordErrorColor: _validatePassword() ? null : ColorConstant.kRedColor,
       ),
     );
   }
@@ -88,7 +87,6 @@ class SignInScreenBloc extends Bloc<SignInScreenEvent, SignInScreenState> {
   void _onEmailValidateEvent(EmailValidationEvent event, Emitter<SignInScreenState> emit){
     emit(
       state.copyWith(
-        emailErrorColor: _validateEmail() ? null : ColorConstant.kRedColor,
         emailErrorMsg: _validateEmail() ? "" : _emailErrorMsg,
       ),
     );
@@ -111,8 +109,6 @@ class SignInScreenBloc extends Bloc<SignInScreenEvent, SignInScreenState> {
       emit(
         state.copyWith(
           passwordErrorMsg: _passwordErrorMsg,
-          passwordErrorColor: ColorConstant.kRedColor,
-          emailErrorColor: ColorConstant.kRedColor,
           emailErrorMsg: _emailErrorMsg,
         ),
       );
