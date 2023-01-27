@@ -7,8 +7,11 @@ class SignUpScreenState extends Equatable {
   final String emailErrorMsg;
   final String passwordErrorMsg;
   final String confirmPasswordErrorMsg;
+  final String privacyPolicyErrorMsg;
   final bool hidePassword;
   final bool isLoading;
+  final bool isPrivacyPolicySelected;
+  final Gender selectedGender;
 
   const SignUpScreenState({
     this.firstNameErrorMsg = "",
@@ -19,6 +22,9 @@ class SignUpScreenState extends Equatable {
     this.confirmPasswordErrorMsg = "",
     this.hidePassword = true,
     this.isLoading = false,
+    this.selectedGender = Gender.male,
+    this.privacyPolicyErrorMsg = "",
+    this.isPrivacyPolicySelected = false,
   });
 
   SignUpScreenState updateStateWith({
@@ -30,6 +36,9 @@ class SignUpScreenState extends Equatable {
     String? confirmPasswordErrorMsg,
     bool? hidePassword,
     bool? isLoading,
+    bool? isPrivacyPolicySelected,
+    Gender? selectedGender,
+    String? privacyPolicyErrorMsg,
   }){
     return SignUpScreenState(
       firstNameErrorMsg: firstNameErrorMsg ?? this.firstNameErrorMsg,
@@ -40,6 +49,9 @@ class SignUpScreenState extends Equatable {
       confirmPasswordErrorMsg: confirmPasswordErrorMsg ?? this.confirmPasswordErrorMsg,
       hidePassword: hidePassword ?? this.hidePassword,
       isLoading: isLoading ?? this.isLoading,
+      selectedGender: selectedGender ?? this.selectedGender,
+      privacyPolicyErrorMsg: privacyPolicyErrorMsg ?? this.privacyPolicyErrorMsg,
+      isPrivacyPolicySelected: isPrivacyPolicySelected ?? this.isPrivacyPolicySelected,
     );
   }
 
@@ -53,6 +65,9 @@ class SignUpScreenState extends Equatable {
       confirmPasswordErrorMsg: json["confirmPasswordErrorMsg"] ?? "",
       hidePassword: json["hidePassword"] ?? "",
       isLoading: json["isLoading"] ?? "",
+      selectedGender: json["selectedGender"] ?? "",
+      privacyPolicyErrorMsg: json["privacyPolicyErrorMsg"] ?? "",
+      isPrivacyPolicySelected: json["isPrivacyPolicySelected"] ?? "",
     );
   }
 
@@ -66,13 +81,16 @@ class SignUpScreenState extends Equatable {
       "confirmPasswordErrorMsg" : confirmPasswordErrorMsg,
       "hidePassword" : hidePassword,
       "isLoading" : isLoading,
+      "selectedGender" : selectedGender,
+      "privacyPolicyErrorMsg" : privacyPolicyErrorMsg,
+      "isPrivacyPolicySelected" : isPrivacyPolicySelected,
     };
   }
 
 
   @override
   String toString() {
-    return 'SignUpScreenState{firstNameErrorMsg: $firstNameErrorMsg, lastNameErrorMsg: $lastNameErrorMsg, fatherNameErrorMsg: $fatherNameErrorMsg, emailErrorMsg: $emailErrorMsg, passwordErrorMsg: $passwordErrorMsg, confirmPasswordErrorMsg: $confirmPasswordErrorMsg, hidePassword: $hidePassword, isLoading: $isLoading}';
+    return 'SignUpScreenState{firstNameErrorMsg: $firstNameErrorMsg, lastNameErrorMsg: $lastNameErrorMsg, fatherNameErrorMsg: $fatherNameErrorMsg, emailErrorMsg: $emailErrorMsg, passwordErrorMsg: $passwordErrorMsg, confirmPasswordErrorMsg: $confirmPasswordErrorMsg, hidePassword: $hidePassword, isLoading: $isLoading, selectedGender: $selectedGender, privacyPolicyErrorMsg: $privacyPolicyErrorMsg, isPrivacyPolicySelected: $isPrivacyPolicySelected}';
   }
 
   @override
@@ -85,5 +103,8 @@ class SignUpScreenState extends Equatable {
     confirmPasswordErrorMsg,
     hidePassword,
     isLoading,
+    selectedGender,
+    privacyPolicyErrorMsg,
+    isPrivacyPolicySelected,
   ];
 }
