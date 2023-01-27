@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../business_logics/bloc/sign_up/sign_up_screen_bloc.dart';
+import '../custom_widgets/custom_app_button.dart';
+import '../custom_widgets/custom_check_box.dart';
+import '../custom_widgets/custom_radio_button.dart';
 import '../custom_widgets/custom_scaffold_before_login.dart';
 import '../custom_widgets/custom_text_field.dart';
 import '../custom_widgets/custom_text_widget.dart';
@@ -365,6 +368,132 @@ class SignUpScreen extends StatelessWidget {
                   ),
                 );
               },
+            ),
+
+            const Padding(
+              padding: EdgeInsets.only(top: 10.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: CustomTextWidget(
+                  text: "Gender:",
+                  fontSize: 18.0,
+                ),
+              ),
+            ),
+            BlocBuilder<SignUpScreenBloc, SignUpScreenState>(
+              builder: (context,state){
+                return Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CustomRadioButton(
+                      buttonTitle: "Male:",
+                      gender: Gender.male,
+                      selectedGender: state.selectedGender,
+                      onTap: (){
+                        signUpScreenBloc.add(
+                          OnGenderChangeEvent(Gender.male),
+                        );
+                      },
+                    ),
+                    CustomRadioButton(
+                      buttonTitle: "Female:",
+                      gender: Gender.female,
+                      selectedGender: state.selectedGender,
+                      onTap: (){
+                        signUpScreenBloc.add(
+                          OnGenderChangeEvent(Gender.female),
+                        );
+                      },
+                    ),
+                    CustomRadioButton(
+                      buttonTitle: "Other",
+                      gender: Gender.other,
+                      selectedGender: state.selectedGender,
+                      onTap: (){
+                        signUpScreenBloc.add(
+                          OnGenderChangeEvent(Gender.other),
+                        );
+                      },
+                    ),
+                  ],
+                );
+              },
+            ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                BlocBuilder<SignUpScreenBloc,SignUpScreenState>(
+                  builder: (context,state){
+                    return CustomCheckBox(
+                      checkBoxValue: state.isPrivacyPolicySelected,
+                      onTap: (){
+                        signUpScreenBloc.add(OnSelectPrivacyPolicyEvent());
+                      },
+                    );
+                  },
+                ),
+                const CustomTextWidget(
+                  text: "I've read and accept the ",
+                  fontSize: 10.0,
+                ),
+                GestureDetector(
+                  onTap: (){},
+                  child: const CustomTextWidget(
+                    textDecoration: TextDecoration.underline,
+                    text: "privacy policy",
+                    fontSize: 12.0,
+                  ),
+                ),
+              ],
+            ),
+            BlocBuilder<SignUpScreenBloc, SignUpScreenState>(
+              builder: (context,state){
+                return Visibility(
+                  visible: state.privacyPolicyErrorMsg.isNotEmpty,
+                  child: CustomTextWidget(
+                    text: state.privacyPolicyErrorMsg,
+                    textColor: ColorConstant.kRedColor,
+                  ),
+                );
+              },
+            ),
+            Padding(
+                padding: const EdgeInsets.only(top: 20.0,bottom: 10.0,),
+                child: BlocBuilder<SignUpScreenBloc,SignUpScreenState>(
+                  builder: (context,state){
+                    return CustomAppButton(
+                      isLoading: state.isLoading,
+                      buttonText: "Sign Up",
+                      onButtonPressed: ()=>
+                          signUpScreenBloc.add(OnButtonPressedEvent()),
+                    );
+                  },
+                )
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const CustomTextWidget(
+                  text: "Already have an account?",
+                  fontSize: 12.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10.0,),
+                  child: GestureDetector(
+                    onTap: (){
+                      Navigator.of(context).pop();
+                    },
+                    child: const CustomTextWidget(
+                      text: "Sign Ip",
+                      fontSize: 12.0,
+                      textColor: ColorConstant.kPrimaryColor,
+                      textDecoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
+              ],
             ),
 
           ],
