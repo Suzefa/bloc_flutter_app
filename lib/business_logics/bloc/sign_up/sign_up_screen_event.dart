@@ -17,3 +17,10 @@ class ConfirmPasswordValidationEvent extends SignUpScreenEvent {}
 class ShowPasswordEvent extends SignUpScreenEvent {}
 
 class OnButtonPressedEvent extends SignUpScreenEvent {}
+
+class OnSelectPrivacyPolicyEvent extends SignUpScreenEvent {}
+
+class OnGenderChangeEvent extends SignUpScreenEvent {
+  final Gender selectedGender;
+  OnGenderChangeEvent(this.selectedGender);
+}
