@@ -12,12 +12,22 @@ This app is created with Flutter framework and focus to implement the flutter bl
 
 1. Make sure you have [Flutter Latest](https://flutter.dev/docs/get-started/install) installed on your computer.
 2. Clone the repository: `git clone https://github.com/Suzefa/bloc_flutter_app.git`
-3. cretae files manully `/ios/firebase_app_id_file.json` , `/ios/Runner/GoogleService-Info.plist` for ios firebase configuration.
-4. create file manully `/lib/firebase_options.dart` for dart integration with firebase.
-5. create file manully `/android/app/google-services.json` for android firebase integration.
-6. Go to the project directory: `cd bloc_flutter_app`
-7. Install the dependencies: `flutter pub get`
-8. Run the app on an emulator or device: `flutter run`
+3. cretae files manully or you can find files [here](https://drive.google.com/drive/folders/1HCOqNaKcbvRrGTQ0MGldnNCMO9y4dTYf?usp=sharing)
+
+    ### for ios firebase configuration
+      - > `/ios/firebase_app_id_file.json`
+       
+      - > `/ios/Runner/GoogleService-Info.plist`
+       
+    ### for dart integration with firebase
+      - > `/lib/firebase_options.dart`
+  
+    ### for android firebase integration
+      - > `/android/app/google-services.json`
+
+4. Go to the project directory: `cd bloc_flutter_app`
+5. Install the dependencies: `flutter pub get`
+6. Run the app on an emulator or device: `flutter run`
 
 ## Features
 
