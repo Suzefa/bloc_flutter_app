@@ -37,6 +37,14 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: MultiBlocProviderList.providers(),
       child: MaterialApp(
+        builder: (context,child){
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(
+              textScaleFactor: 1.0,
+            ),
+            child: child!,
+          );
+        },
         onGenerateRoute: RouteGenerator.generateRoute,
         theme: ThemeData(
           primaryColor: ColorConstant.kPrimaryColor,
