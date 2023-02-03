@@ -17,6 +17,7 @@ dependencies:
   bloc_test: ^9.1.0
   equatable: ^2.0.5
   google_fonts: ^3.0.1
+  firebase_core: ^2.4.1
 
 dev_dependencies:
   flutter_test:
