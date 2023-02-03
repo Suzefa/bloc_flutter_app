@@ -1,12 +1,18 @@
+import 'dart:developer';
+
 import 'package:equatable/equatable.dart';
-import 'package:example_project/presentation/utilities/regex_validation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../data/api_handling/user_service.dart';
+import '../../../data/models/user_model.dart';
+import '../../../presentation/utilities/custom_dialog.dart';
+import '../../../presentation/utilities/regex_validation.dart';
 
 part 'sign_up_screen_event.dart';
 part 'sign_up_screen_state.dart';
 
-class SignUpScreenBloc extends Bloc<SignUpScreenEvent, SignUpScreenState> {
+class SignUpScreenBloc extends Bloc<SignUpScreenEvent, SignUpScreenState> with CustomDialog{
   final TextEditingController firstNameEditingController = TextEditingController();
   final TextEditingController lastNameEditingController = TextEditingController();
   final TextEditingController fatherNameEditingController = TextEditingController();
@@ -19,6 +25,8 @@ class SignUpScreenBloc extends Bloc<SignUpScreenEvent, SignUpScreenState> {
   final FocusNode emailNode = FocusNode();
   final FocusNode passwordNode = FocusNode();
   final FocusNode confirmPasswordNode = FocusNode();
+  final UserService _userService = UserService();
+  BuildContext? screenContext;
   String _firstNameErrorMsg = "",
       _lastNameErrorMsg = "",
       _fatherNameErrorMsg = "",
@@ -117,12 +125,39 @@ class SignUpScreenBloc extends Bloc<SignUpScreenEvent, SignUpScreenState> {
           isLoading: true,
         ),
       );
-      await Future.delayed(const Duration(seconds: 4),);
+      UserModel createUser = UserModel(
+        firstName: firstNameEditingController.text,
+        lastName: lastNameEditingController.text,
+        guardianName: fatherNameEditingController.text,
+        email: emailEditingController.text,
+        password: passwordEditingController.text,
+        gender: _selectedGender==Gender.male
+            ? "male" : _selectedGender==Gender.female
+            ? "female" : "others" ,
+      );
+      log(createUser.toString());
+      dynamic result = await _userService.signUpNewUser(createUser);
       emit(
         state.updateStateWith(
           isLoading: false,
         ),
       );
+      if(result is UserModel){
+        Navigator.pop(screenContext!);
+        floatingDialog(
+          "User created successfully.",
+          screenContext!,
+          isErrorMessage: false,
+          seconds: 5,
+        );
+      } else {
+        floatingDialog(
+          result,
+          screenContext!,
+          isErrorMessage: true,
+          seconds: 5,
+        );
+      }
     } else {
       emit(
         state.updateStateWith(

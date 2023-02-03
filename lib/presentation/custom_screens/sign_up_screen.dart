@@ -16,6 +16,7 @@ class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SignUpScreenBloc signUpScreenBloc = BlocProvider.of<SignUpScreenBloc>(context);
+    signUpScreenBloc.screenContext = context;
     return CustomScaffoldBeforeLogin(
       onScreenTap: signUpScreenBloc.removeFocus,
       child: SingleChildScrollView(
@@ -173,13 +174,13 @@ class SignUpScreen extends StatelessWidget {
             BlocBuilder<SignUpScreenBloc, SignUpScreenState>(
               builder: (context,state){
                 return Visibility(
-                  visible: state.firstNameErrorMsg.isNotEmpty,
+                  visible: state.fatherNameErrorMsg.isNotEmpty,
                   child: Padding(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: Align(
                       alignment: Alignment.centerRight,
                       child: CustomTextWidget(
-                        text: state.firstNameErrorMsg,
+                        text: state.fatherNameErrorMsg,
                         textColor: ColorConstant.kRedColor,
                       ),
                     ),
