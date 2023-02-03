@@ -1,3 +1,4 @@
+---------------
 # Flutter Bloc State Management App
 
 This app is created with Flutter framework and focus to implement the flutter bloc and with the clean architecture using MVVM approach.
