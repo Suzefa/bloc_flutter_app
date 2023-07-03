@@ -16,7 +16,7 @@ dependencies:
   test: ^1.21.4
   bloc_test: ^9.1.0
   equatable: ^2.0.5
-  google_fonts: ^3.0.1
+  google_fonts: ^5.1.0
   firebase_core: ^2.4.1
   firebase_auth: ^4.2.5
   cloud_firestore: ^4.3.1
