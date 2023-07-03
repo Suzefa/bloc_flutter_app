@@ -21,13 +21,14 @@ jobs:
           flutter-version: '3.10.0'
       - run: flutter pub get
 #      - run: flutter test
-      - run: flutter build apk --target=lib/main.dart --target-platform android-arm,android-arm64,android-x64 --split-per-abi --no-tree-shake-icons
       - name: Configure Firebase
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: |
           echo "$FIREBASE_SERVICE_ACCOUNT" > $HOME/google-services.json
           mv $HOME/google-services.json $GITHUB_WORKSPACE/android/app/
+          
+      - run: flutter build apk --target=lib/main.dart --target-platform android-arm,android-arm64,android-x64 --split-per-abi --no-tree-shake-icons
       - name: Push to Release
         uses: ncipollo/release-action@v1
         with:
