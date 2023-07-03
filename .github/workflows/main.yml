@@ -26,7 +26,8 @@ jobs:
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: |
-          echo "$FIREBASE_SERVICE_ACCOUNT" > google-services.json
+          echo "$FIREBASE_SERVICE_ACCOUNT" > $HOME/google-services.json
+          mv $HOME/google-services.json $GITHUB_WORKSPACE/android/app/
       - name: Push to Release
         uses: ncipollo/release-action@v1
         with:
