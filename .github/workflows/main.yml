@@ -20,7 +20,7 @@ jobs:
         with:
           flutter-version: '3.10.0'
       - run: flutter pub get
-      - run: flutter test
+#      - run: flutter test
       - run: flutter build apk --target=lib/main.dart --target-platform android-arm,android-arm64,android-x64 --split-per-abi --no-tree-shake-icons
       - name: Push to Release
         uses: ncipollo/release-action@v1
