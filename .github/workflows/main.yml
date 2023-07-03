@@ -22,6 +22,11 @@ jobs:
       - run: flutter pub get
 #      - run: flutter test
       - run: flutter build apk --target=lib/main.dart --target-platform android-arm,android-arm64,android-x64 --split-per-abi --no-tree-shake-icons
+      - name: Configure Firebase
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          echo "$FIREBASE_SERVICE_ACCOUNT" > google-services.json
       - name: Push to Release
         uses: ncipollo/release-action@v1
         with:
