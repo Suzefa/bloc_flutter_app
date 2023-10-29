@@ -23,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final TextEditingController _textEditingController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
+  // this is state obj
 
   @override
   Widget build(BuildContext context) {
