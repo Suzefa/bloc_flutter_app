@@ -13,5 +13,6 @@ class RouteNames{
   static const String kSignUpScreenRoute = "/Sign_Up_Screen_Route";
   static const String kHomeScreenRoute = "/Home_Screen_Route";
   static const String kItemViewScreenRoute = "/Item_View_Screen_Route";
+  static const String kDashBoardScreenRoute = "/DashBoardScreenRoute";
 
 }
