@@ -4,15 +4,21 @@ import 'package:example_project/presentation/utilities/regex_validation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../data/api_handling/user_service.dart';
+import '../../../data/models/user_model.dart';
+import '../../../presentation/utilities/custom_dialog.dart';
+
 part 'sign_in_screen_event.dart';
 part 'sign_in_screen_state.dart';
 
-class SignInScreenBloc extends Bloc<SignInScreenEvent, SignInScreenState> {
+class SignInScreenBloc extends Bloc<SignInScreenEvent, SignInScreenState> with CustomDialog{
 
   final TextEditingController emailEditingController = TextEditingController();
   final FocusNode emailFocusNode = FocusNode();
   final TextEditingController passwordEditingController = TextEditingController();
   final FocusNode passwordFocusNode = FocusNode();
+  final UserService _userService = UserService();
+  BuildContext? screenContext;
   bool _showPassword = true,_rememberMe = false;
   String _emailErrorMsg = "", _passwordErrorMsg="";
 
@@ -99,12 +105,20 @@ class SignInScreenBloc extends Bloc<SignInScreenEvent, SignInScreenState> {
           isLoading: true,
         ),
       );
-      await Future.delayed(const Duration(seconds: 5),(){});
+      dynamic result = await _userService.loginUser(
+        email: emailEditingController.text,
+        password: passwordEditingController.text,
+      );
       emit(
         state.copyWith(
           isLoading: false,
         ),
       );
+      if(result is UserModel){
+        
+      } else {
+        floatingDialog(result, screenContext!,isErrorMessage: true,);
+      }
     }else{
       emit(
         state.copyWith(
