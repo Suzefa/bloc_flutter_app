@@ -1,0 +1,4 @@
+enum Error {
+  noInternetAvailable,
+  noTextRender,
+}
